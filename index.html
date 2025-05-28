@@ -10,6 +10,10 @@
     <!-- 引入 Flatpickr 日期選擇器 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+    <!-- 添加 meta 標籤，防止表單提交後被緩存 -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body>
     <div class="container">
@@ -19,7 +23,13 @@
         </header>
 
         <main>
-            <form id="orderForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdbJUaAi836py8MPEoMJYrz0AoNvMwpB0e31sW5xkpYKOrKjQ/formResponse" method="POST" target="hidden_iframe">
+            <!-- 修改表單屬性，添加 enctype 和 autocomplete -->
+            <form id="orderForm" 
+                  action="https://docs.google.com/forms/d/e/1FAIpQLSdbJUaAi836py8MPEoMJYrz0AoNvMwpB0e31sW5xkpYKOrKjQ/formResponse" 
+                  method="POST" 
+                  target="hidden_iframe"
+                  enctype="application/x-www-form-urlencoded"
+                  autocomplete="off">
                 <!-- 訂購者 -->
                 <div class="form-group">
                     <label for="customerName">訂購者 <span class="required">*</span></label>
@@ -65,8 +75,15 @@
                     <button type="reset" class="btn-secondary">重置表單</button>
                 </div>
             </form>
-            <!-- 隱藏的 iframe 用於提交表單 -->
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+            
+            <!-- 修改隱藏的 iframe，添加更多屬性 -->
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none; width:0; height:0; border:0; border:none;"></iframe>
+            
+            <!-- 添加表單提交狀態指示器 -->
+            <div id="formStatus" class="form-status" style="display:none;">
+                <div class="spinner"></div>
+                <p>正在提交表單，請稍候...</p>
+            </div>
         </main>
 
         <footer>
