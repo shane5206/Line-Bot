@@ -12,98 +12,60 @@ document.addEventListener('DOMContentLoaded', function() {
     // 新增訂購項目功能
     const addItemBtn = document.getElementById('addItemBtn');
     const orderItemsContainer = document.querySelector('.order-items');
+    const combinedItemsInput = document.getElementById('combinedItems');
     let itemCounter = 1;
+
+    // 更新組合後的項目文字
+    function updateCombinedItems() {
+        const items = [];
+        const orderItems = document.querySelectorAll('.order-item');
+        
+        orderItems.forEach(item => {
+            const nameInput = item.querySelector('input[name="item_name"]');
+            const quantityInput = item.querySelector('input[name="item_quantity"]');
+            
+            if (nameInput && nameInput.value.trim() && quantityInput && quantityInput.value) {
+                items.push(`${nameInput.value.trim()} x ${quantityInput.value}`);
+            }
+        });
+        
+        // 將所有項目組合成一個字串，用換行符分隔
+        combinedItemsInput.value = items.join('\n');
+    }
+
+    // 為所有項目輸入框添加事件監聽器
+    function addItemInputListeners(item) {
+        const inputs = item.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', updateCombinedItems);
+        });
+    }
+
+    // 初始化第一個項目的監聽器
+    addItemInputListeners(document.querySelector('.order-item'));
 
     addItemBtn.addEventListener('click', function() {
         itemCounter++;
         const newItem = document.createElement('div');
         newItem.className = 'order-item';
         newItem.innerHTML = `
-            <select name="entry.915539579_${itemCounter}" required>
-                <option value="" disabled selected>選擇項目</option>
-                <option value="項目A">項目A</option>
-                <option value="項目B">項目B</option>
-                <option value="項目C">項目C</option>
-                <option value="項目D">項目D</option>
-            </select>
-            <input type="number" name="entry.915539579_quantity_${itemCounter}" min="1" value="1" required>
+            <input type="text" name="item_name" placeholder="請輸入項目名稱" required>
+            <input type="number" name="item_quantity" min="1" value="1" required placeholder="數量">
             <button type="button" class="btn-remove">刪除</button>
         `;
         
         // 將新增的項目插入到「新增項目」按鈕之前
         orderItemsContainer.insertBefore(newItem, addItemBtn);
         
+        // 為新項目添加事件監聽器
+        addItemInputListeners(newItem);
+        
         // 為刪除按鈕添加事件監聽器
         const removeBtn = newItem.querySelector('.btn-remove');
         removeBtn.addEventListener('click', function() {
             newItem.remove();
+            updateCombinedItems(); // 更新組合後的項目文字
         });
-    });
-
-    // 照片上傳預覽功能
-    const photoUpload = document.getElementById('photoUpload');
-    const filePreview = document.getElementById('filePreview');
-    const photoUploadField = document.querySelector('input[name="entry.1027703396"]');
-    
-    // 創建一個隱藏欄位用於存儲上傳的文件信息
-    if (!photoUploadField) {
-        const hiddenField = document.createElement('input');
-        hiddenField.type = 'hidden';
-        hiddenField.name = 'entry.1027703396';
-        hiddenField.id = 'photoUploadField';
-        photoUpload.parentNode.appendChild(hiddenField);
-    }
-    
-    // 存儲上傳的文件信息
-    let uploadedFiles = [];
-    
-    photoUpload.addEventListener('change', function() {
-        filePreview.innerHTML = '';
-        uploadedFiles = [];
-        
-        if (this.files) {
-            for (let i = 0; i < this.files.length; i++) {
-                const file = this.files[i];
-                
-                // 檢查文件類型
-                if (!file.type.match('image.*')) {
-                    continue;
-                }
-                
-                // 檢查文件大小 (限制為 5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert(`文件 ${file.name} 超過 5MB 大小限制，將不會被上傳。`);
-                    continue;
-                }
-                
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.title = file.name;
-                    
-                    const imgContainer = document.createElement('div');
-                    imgContainer.className = 'preview-item';
-                    imgContainer.appendChild(img);
-                    
-                    filePreview.appendChild(imgContainer);
-                    
-                    // 模擬文件上傳到 Google Drive 並獲取文件 ID
-                    // 注意：這只是一個模擬，實際應用中需要使用 Google Drive API
-                    const fileId = 'file_' + Math.random().toString(36).substring(2, 15);
-                    uploadedFiles.push([fileId, file.name, file.type]);
-                    
-                    // 更新隱藏欄位的值
-                    const photoUploadField = document.getElementById('photoUploadField');
-                    if (photoUploadField) {
-                        photoUploadField.value = JSON.stringify(uploadedFiles);
-                    }
-                };
-                
-                reader.readAsDataURL(file);
-            }
-        }
     });
 
     // 表單提交處理
@@ -131,8 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 重置表單
         orderForm.reset();
-        filePreview.innerHTML = '';
-        uploadedFiles = [];
         
         // 重置提交按鈕狀態
         const submitButton = orderForm.querySelector('button[type="submit"]');
@@ -150,6 +110,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 表單提交事件處理
     orderForm.addEventListener('submit', function(e) {
+        // 更新組合後的項目文字
+        updateCombinedItems();
+        
         // 檢查表單是否有效
         if (!orderForm.checkValidity()) {
             // 觸發瀏覽器的原生表單驗證
@@ -168,8 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 添加表單重置事件處理
     orderForm.addEventListener('reset', function() {
-        filePreview.innerHTML = '';
-        uploadedFiles = [];
         successMessage.style.display = 'none';
         errorMessage.style.display = 'none';
         
@@ -177,6 +138,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const submitButton = orderForm.querySelector('button[type="submit"]');
         submitButton.disabled = false;
         submitButton.textContent = '提交訂單';
+        
+        // 重置組合後的項目文字
+        setTimeout(updateCombinedItems, 0);
     });
     
     // 添加電話號碼驗證
@@ -207,19 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         .btn-remove:hover {
             background-color: #c0392b;
-        }
-        
-        .preview-item {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .preview-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
-            border: 1px solid #ddd;
         }
     `;
     document.head.appendChild(style);

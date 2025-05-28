@@ -37,35 +37,20 @@
                     <label>訂購項目和數量 <span class="required">*</span></label>
                     <div class="order-items">
                         <div class="order-item">
-                            <select name="entry.915539579" required>
-                                <option value="" disabled selected>選擇項目</option>
-                                <option value="項目A">項目A</option>
-                                <option value="項目B">項目B</option>
-                                <option value="項目C">項目C</option>
-                                <option value="項目D">項目D</option>
-                            </select>
-                            <input type="number" name="entry.915539579_quantity" min="1" value="1" required>
+                            <input type="text" name="item_name" placeholder="請輸入項目名稱" required>
+                            <input type="number" name="item_quantity" min="1" value="1" required placeholder="數量">
+                            <button type="button" class="btn-remove">刪除</button>
                         </div>
                         <button type="button" id="addItemBtn" class="btn-secondary">+ 新增項目</button>
                     </div>
+                    <!-- 隱藏欄位用於存儲組合後的項目文字 -->
+                    <input type="hidden" name="entry.915539579" id="combinedItems">
                 </div>
 
                 <!-- 希望交期 -->
                 <div class="form-group">
                     <label for="deliveryDate">希望交期 <span class="required">*</span></label>
                     <input type="text" id="deliveryDate" name="entry.1595837609" required placeholder="請選擇日期" readonly>
-                </div>
-
-                <!-- 照片上傳 -->
-                <div class="form-group">
-                    <label for="photoUpload">照片上傳</label>
-                    <div class="file-upload">
-                        <input type="file" id="photoUpload" accept="image/*" multiple>
-                        <input type="hidden" id="photoUploadField" name="entry.1027703396">
-                        <div class="file-upload-preview" id="filePreview"></div>
-                    </div>
-                    <p class="file-hint">您可以上傳多張照片，每張照片大小不超過 5MB</p>
-                    <p class="file-note">注意：由於技術限制，照片上傳功能在當前版本中可能無法正常工作。請在備註中提供照片的連結或說明。</p>
                 </div>
 
                 <!-- 備註 -->
