@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const addItemBtn = document.getElementById('addItemBtn');
     const orderItemsContainer = document.querySelector('.order-items');
     const combinedItemsInput = document.getElementById('combinedItems');
-    const formStatus = document.getElementById('formStatus');
     let itemCounter = 1;
 
     // 更新組合後的項目文字
@@ -71,120 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 表單提交處理
     const orderForm = document.getElementById('orderForm');
-    const hiddenIframe = document.getElementById('hidden_iframe');
-    
-    // 創建成功和錯誤消息元素
-    const successMessage = document.createElement('div');
-    successMessage.className = 'success-message';
-    successMessage.textContent = '表單已成功提交！感謝您的訂購。';
-    
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'error-message';
-    errorMessage.textContent = '提交表單時發生錯誤，請稍後再試。';
-    
-    // 將消息元素添加到表單前面
-    orderForm.parentNode.insertBefore(successMessage, orderForm);
-    orderForm.parentNode.insertBefore(errorMessage, orderForm);
-    
-    // 顯示表單提交狀態指示器
-    function showFormStatus() {
-        formStatus.style.display = 'flex';
-    }
-    
-    // 隱藏表單提交狀態指示器
-    function hideFormStatus() {
-        formStatus.style.display = 'none';
-    }
-    
-    // 監聽 iframe 載入完成事件
-    hiddenIframe.addEventListener('load', function() {
-        console.log('iframe 已載入完成');
-        
-        // 隱藏表單提交狀態指示器
-        hideFormStatus();
-        
-        try {
-            // 檢查 iframe 內容是否包含成功訊息
-            const iframeContent = hiddenIframe.contentDocument || hiddenIframe.contentWindow.document;
-            const iframeText = iframeContent.body.innerText || '';
-            
-            console.log('iframe 內容:', iframeText);
-            
-            // 如果 iframe 內容包含特定文字，表示提交成功
-            if (iframeText.includes('感謝您') || iframeText.includes('您的回覆已記錄') || 
-                iframeText.includes('Thank you') || iframeText.includes('Your response has been recorded')) {
-                // 顯示成功消息
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // 重置表單
-                orderForm.reset();
-                
-                // 重置提交按鈕狀態
-                const submitButton = orderForm.querySelector('button[type="submit"]');
-                submitButton.disabled = false;
-                submitButton.textContent = '提交訂單';
-                
-                // 移除提交中的視覺效果
-                orderForm.classList.remove('submitting');
-                
-                // 3秒後隱藏成功消息
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-                
-                console.log('表單提交成功');
-            } else {
-                // 如果沒有找到成功訊息，可能是提交失敗
-                console.log('表單提交可能失敗，iframe 內容不包含成功訊息');
-                
-                // 顯示成功消息（因為 Google 表單可能不會返回明確的成功訊息）
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // 重置表單
-                orderForm.reset();
-                
-                // 重置提交按鈕狀態
-                const submitButton = orderForm.querySelector('button[type="submit"]');
-                submitButton.disabled = false;
-                submitButton.textContent = '提交訂單';
-                
-                // 移除提交中的視覺效果
-                orderForm.classList.remove('submitting');
-                
-                // 3秒後隱藏成功消息
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-            }
-        } catch (e) {
-            // 如果無法讀取 iframe 內容（可能是因為跨域限制），假設提交成功
-            console.log('無法讀取 iframe 內容，可能是因為跨域限制:', e);
-            
-            // 顯示成功消息
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-            
-            // 重置表單
-            orderForm.reset();
-            
-            // 重置提交按鈕狀態
-            const submitButton = orderForm.querySelector('button[type="submit"]');
-            submitButton.disabled = false;
-            submitButton.textContent = '提交訂單';
-            
-            // 移除提交中的視覺效果
-            orderForm.classList.remove('submitting');
-            
-            // 3秒後隱藏成功消息
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000);
-            
-            console.log('假設表單提交成功');
-        }
-    });
     
     // 表單提交事件處理
     orderForm.addEventListener('submit', function(e) {
@@ -203,65 +88,20 @@ document.addEventListener('DOMContentLoaded', function() {
         submitButton.disabled = true;
         submitButton.textContent = '提交中...';
         
-        // 添加表單提交中的視覺效果
-        orderForm.classList.add('submitting');
-        
-        // 顯示表單提交狀態指示器
-        showFormStatus();
-        
         // 添加控制台日誌
         console.log('表單正在提交...');
         console.log('表單數據:', new FormData(orderForm));
         
-        // 表單會自動提交到隱藏的 iframe
-        // 不需要額外的 fetch 請求
-        
-        // 設置超時處理，以防 iframe 載入事件沒有觸發
-        setTimeout(() => {
-            // 如果 10 秒後按鈕仍然處於禁用狀態，則假設提交成功
-            if (submitButton.disabled) {
-                console.log('表單提交超時，假設提交成功');
-                
-                // 隱藏表單提交狀態指示器
-                hideFormStatus();
-                
-                // 顯示成功消息
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // 重置表單
-                orderForm.reset();
-                
-                // 重置提交按鈕狀態
-                submitButton.disabled = false;
-                submitButton.textContent = '提交訂單';
-                
-                // 移除提交中的視覺效果
-                orderForm.classList.remove('submitting');
-                
-                // 3秒後隱藏成功消息
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
-            }
-        }, 10000);
+        // 表單會自動提交到 Google 表單，然後重定向到感謝頁面
+        // 不需要額外的處理
     });
     
     // 添加表單重置事件處理
     orderForm.addEventListener('reset', function() {
-        successMessage.style.display = 'none';
-        errorMessage.style.display = 'none';
-        
-        // 隱藏表單提交狀態指示器
-        hideFormStatus();
-        
         // 重置提交按鈕狀態
         const submitButton = orderForm.querySelector('button[type="submit"]');
         submitButton.disabled = false;
         submitButton.textContent = '提交訂單';
-        
-        // 移除提交中的視覺效果
-        orderForm.classList.remove('submitting');
         
         // 重置組合後的項目文字
         setTimeout(updateCombinedItems, 0);

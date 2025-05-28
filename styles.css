@@ -233,89 +233,6 @@ footer {
     opacity: 0.7;
 }
 
-/* 表單提交狀態指示器 */
-.form-status {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.form-status p {
-    font-size: 1.2rem;
-    color: #2c3e50;
-    font-weight: 500;
-}
-
-/* 改進表單提交中狀態 */
-.submitting {
-    position: relative;
-    pointer-events: none;
-    opacity: 0.7;
-}
-
-.submitting::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.5);
-    z-index: 10;
-}
-
-/* 改進成功和錯誤消息樣式 */
-.success-message,
-.error-message {
-    display: none;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    border-radius: 4px;
-    font-weight: 500;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-}
-
-.error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
 /* 新增項目按鈕樣式 */
 #addItemBtn {
     background-color: #2ecc71;
@@ -332,4 +249,31 @@ footer {
 
 #addItemBtn:hover {
     background-color: #27ae60;
+}
+
+/* 保留成功和錯誤消息樣式，但簡化它們 */
+.success-message, .error-message {
+    display: none;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    text-align: center;
+    animation: fadeIn 0.5s;
+}
+
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 } 
