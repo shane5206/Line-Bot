@@ -1,0 +1,269 @@
+/* 基本樣式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans TC', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 頁首樣式 */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+header h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 2.5rem;
+}
+
+header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+/* 表單樣式 */
+form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.required {
+    color: #e74c3c;
+    margin-left: 3px;
+}
+
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* 訂購項目樣式 */
+.order-items {
+    margin-bottom: 15px;
+}
+
+.order-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.order-item select {
+    flex: 3;
+}
+
+.order-item input {
+    flex: 1;
+}
+
+/* 按鈕樣式 */
+.btn-primary,
+.btn-secondary {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #ecf0f1;
+    color: #2c3e50;
+}
+
+.btn-secondary:hover {
+    background-color: #dde4e6;
+    transform: translateY(-2px);
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* 文件上傳樣式 */
+.file-upload {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.file-upload input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.file-hint {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+.file-note {
+    font-size: 0.85rem;
+    color: #e74c3c;
+    margin-top: 5px;
+    font-weight: 500;
+    padding: 8px;
+    background-color: #fdf2f2;
+    border-left: 3px solid #e74c3c;
+    border-radius: 0 4px 4px 0;
+}
+
+.file-upload-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.file-upload-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* 頁尾樣式 */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px 0;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    form {
+        padding: 20px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+    }
+    
+    .order-item {
+        flex-direction: column;
+    }
+    
+    .order-item select,
+    .order-item input {
+        width: 100%;
+    }
+}
+
+/* 日期選擇器自定義樣式 */
+.flatpickr-calendar {
+    font-family: 'Noto Sans TC', sans-serif;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.flatpickr-day.selected {
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+.flatpickr-day.today {
+    border-color: #3498db;
+}
+
+/* 表單提交成功提示 */
+.success-message {
+    display: none;
+    background-color: #2ecc71;
+    color: white;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* 表單錯誤提示 */
+.error-message {
+    display: none;
+    background-color: #e74c3c;
+    color: white;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+} 
