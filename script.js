@@ -108,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 表單提交處理
     const orderForm = document.getElementById('orderForm');
+    const hiddenIframe = document.getElementById('hidden_iframe');
     
     // 創建成功和錯誤消息元素
     const successMessage = document.createElement('div');
@@ -122,10 +123,33 @@ document.addEventListener('DOMContentLoaded', function() {
     orderForm.parentNode.insertBefore(successMessage, orderForm);
     orderForm.parentNode.insertBefore(errorMessage, orderForm);
     
+    // 監聽 iframe 載入完成事件
+    hiddenIframe.addEventListener('load', function() {
+        // 假設表單提交成功
+        successMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+        
+        // 重置表單
+        orderForm.reset();
+        filePreview.innerHTML = '';
+        uploadedFiles = [];
+        
+        // 重置提交按鈕狀態
+        const submitButton = orderForm.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = '提交訂單';
+        
+        // 3秒後隱藏成功消息
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 3000);
+        
+        // 添加控制台日誌
+        console.log('表單提交成功');
+    });
+    
     // 表單提交事件處理
     orderForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
         // 檢查表單是否有效
         if (!orderForm.checkValidity()) {
             // 觸發瀏覽器的原生表單驗證
@@ -135,56 +159,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 顯示提交中的狀態
         const submitButton = orderForm.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.textContent;
         submitButton.disabled = true;
         submitButton.textContent = '提交中...';
         
-        // 獲取表單數據
-        const formData = new FormData(orderForm);
-        
-        // 使用 fetch API 提交表單
-        fetch(orderForm.action, {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors' // 這是必要的，因為 Google 表單不允許跨域請求
-        })
-        .then(() => {
-            // 由於使用了 no-cors 模式，我們無法獲取響應狀態
-            // 但我們可以假設表單已成功提交
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-            
-            // 重置表單
-            orderForm.reset();
-            filePreview.innerHTML = '';
-            uploadedFiles = [];
-            
-            // 重置提交按鈕狀態
-            submitButton.disabled = false;
-            submitButton.textContent = originalButtonText;
-            
-            // 3秒後隱藏成功消息
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 3000);
-
-            // 添加控制台日誌
-            console.log('表單提交成功');
-        })
-        .catch(error => {
-            console.error('提交表單時發生錯誤:', error);
-            errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
-            
-            // 重置提交按鈕狀態
-            submitButton.disabled = false;
-            submitButton.textContent = originalButtonText;
-            
-            // 3秒後隱藏錯誤消息
-            setTimeout(() => {
-                errorMessage.style.display = 'none';
-            }, 3000);
-        });
+        // 表單會自動提交到隱藏的 iframe
+        // 不需要額外的 fetch 請求
     });
     
     // 添加表單重置事件處理
@@ -193,6 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadedFiles = [];
         successMessage.style.display = 'none';
         errorMessage.style.display = 'none';
+        
+        // 重置提交按鈕狀態
+        const submitButton = orderForm.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = '提交訂單';
     });
     
     // 添加電話號碼驗證

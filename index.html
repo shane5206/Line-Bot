@@ -19,7 +19,7 @@
         </header>
 
         <main>
-            <form id="orderForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdbJUaAi836py8MPEoMJYrz0AoNvMwpB0e31sW5xkpYKOrKjQ/formResponse" method="POST" target="_self" enctype="multipart/form-data">
+            <form id="orderForm" action="https://docs.google.com/forms/d/e/1FAIpQLSdbJUaAi836py8MPEoMJYrz0AoNvMwpB0e31sW5xkpYKOrKjQ/formResponse" method="POST" target="hidden_iframe">
                 <!-- 訂購者 -->
                 <div class="form-group">
                     <label for="customerName">訂購者 <span class="required">*</span></label>
@@ -80,6 +80,8 @@
                     <button type="reset" class="btn-secondary">重置表單</button>
                 </div>
             </form>
+            <!-- 隱藏的 iframe 用於提交表單 -->
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
         </main>
 
         <footer>
