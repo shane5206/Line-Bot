@@ -132,6 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
             orderForm.reportValidity();
             return;
         }
+
+        // 顯示提交中的狀態
+        const submitButton = orderForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.disabled = true;
+        submitButton.textContent = '提交中...';
         
         // 獲取表單數據
         const formData = new FormData(orderForm);
@@ -153,15 +159,26 @@ document.addEventListener('DOMContentLoaded', function() {
             filePreview.innerHTML = '';
             uploadedFiles = [];
             
+            // 重置提交按鈕狀態
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+            
             // 3秒後隱藏成功消息
             setTimeout(() => {
                 successMessage.style.display = 'none';
             }, 3000);
+
+            // 添加控制台日誌
+            console.log('表單提交成功');
         })
         .catch(error => {
             console.error('提交表單時發生錯誤:', error);
             errorMessage.style.display = 'block';
             successMessage.style.display = 'none';
+            
+            // 重置提交按鈕狀態
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
             
             // 3秒後隱藏錯誤消息
             setTimeout(() => {
